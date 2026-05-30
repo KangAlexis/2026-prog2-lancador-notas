@@ -5,6 +5,7 @@
 package com.mycompany.lancadornotas.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 /**
  *
@@ -12,15 +13,18 @@ import java.time.LocalDate;
  */
 public class Aluno {
     
+    private static int contador = 1;
     private int id;
     private String nome;
     private String turma;
     private LocalDate dataNasc;
 
     public Aluno() {
+        this.id = contador++;
     }
 
     public Aluno(String nome, String turma, LocalDate dataNasc) {
+        this.id = contador++;
         this.nome = nome;
         this.turma = turma;
         this.dataNasc = dataNasc;
@@ -28,10 +32,6 @@ public class Aluno {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -60,10 +60,12 @@ public class Aluno {
 
     @Override
     public String toString() {
-        return  nome + "\n" + dataNasc;
+        return  turma + " - " + nome;
     }
     
-    
-    
-    
+    public int retornaIdade(){
+        
+        return Period.between(
+                dataNasc, LocalDate.now()).getYears();
+    }
 }

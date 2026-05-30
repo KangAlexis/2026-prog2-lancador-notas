@@ -6,10 +6,12 @@ package com.mycompany.lancadornotas.view;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.lancadornotas.model.Aluno;
+import com.mycompany.lancadornotas.model.Nota;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,13 +20,20 @@ import java.util.List;
 public class Principal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Principal.class.getName());
+    //Aluno
     private List<Aluno> listaAlunos =  new ArrayList<>();
+    private int posicaoTabelaAluno = -1;
     
-    /**
-     * Creates new form Principal
-     */
+    //Nota
+    private List<Nota> listaNotas = new ArrayList<>();
+    private int posicaoTabelaNota = -1;
+    
     public Principal() {
         initComponents();
+        setLocationRelativeTo(null);
+        setResizable(false);
+        btnDeletarAluno.setEnabled(false);
+        btnDeletarNota.setEnabled(false);
     }
 
     /**
@@ -45,11 +54,23 @@ public class Principal extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         cbxTurma = new javax.swing.JComboBox<>();
         ftdDAta = new javax.swing.JFormattedTextField();
-        btnSalvar = new javax.swing.JButton();
-        btnLimpar = new javax.swing.JButton();
+        btnSalvarAluno = new javax.swing.JButton();
+        btnLimparAluno = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblAlunos = new javax.swing.JTable();
+        btnDeletarAluno = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cbxAluno = new javax.swing.JComboBox<>();
+        cbxDisciplina = new javax.swing.JComboBox<>();
+        txtNota = new javax.swing.JTextField();
+        btnLimparNota = new javax.swing.JButton();
+        btnSalvarNota = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblNotas = new javax.swing.JTable();
+        btnDeletarNota = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,23 +108,23 @@ public class Principal extends javax.swing.JFrame {
         }
         ftdDAta.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
 
-        btnSalvar.setBackground(new java.awt.Color(51, 153, 255));
-        btnSalvar.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        btnSalvar.setForeground(new java.awt.Color(255, 255, 255));
-        btnSalvar.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/salvar.png")); // NOI18N
-        btnSalvar.setText("Salvar");
-        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvarAluno.setBackground(new java.awt.Color(51, 153, 255));
+        btnSalvarAluno.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnSalvarAluno.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalvarAluno.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/salvar.png")); // NOI18N
+        btnSalvarAluno.setText("Salvar");
+        btnSalvarAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalvarActionPerformed(evt);
+                btnSalvarAlunoActionPerformed(evt);
             }
         });
 
-        btnLimpar.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
-        btnLimpar.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/limpar-limpo.png")); // NOI18N
-        btnLimpar.setText("Limpar");
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+        btnLimparAluno.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        btnLimparAluno.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/limpar-limpo.png")); // NOI18N
+        btnLimparAluno.setText("Limpar");
+        btnLimparAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
+                btnLimparAlunoActionPerformed(evt);
             }
         });
 
@@ -130,7 +151,22 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblAlunos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAlunosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblAlunos);
+
+        btnDeletarAluno.setBackground(new java.awt.Color(255, 51, 51));
+        btnDeletarAluno.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnDeletarAluno.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletarAluno.setText("Deletar");
+        btnDeletarAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarAlunoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -153,12 +189,14 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(ftdDAta, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(cbxTurma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSalvar)
+                                .addComponent(btnSalvarAluno)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLimpar)
+                                .addComponent(btnLimparAluno)
                                 .addGap(9, 9, 9))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnDeletarAluno)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(9, 9, 9)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -179,26 +217,147 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(ftdDAta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalvar)
-                    .addComponent(btnLimpar))
+                    .addComponent(btnSalvarAluno)
+                    .addComponent(btnLimparAluno))
                 .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnDeletarAluno)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Alunos", new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/graduating-student.png"), jPanel1); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
+        jLabel5.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel5.setText("Aluno:");
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel6.setText("Disciplina:");
+
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        jLabel7.setText("Nota:");
+
+        cbxAluno.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+
+        cbxDisciplina.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+        cbxDisciplina.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "Portugues", "Matematica", "Ingles", "Ciencia", "Historia", "Geografia" }));
+
+        txtNota.setFont(new java.awt.Font("Helvetica Neue", 0, 24)); // NOI18N
+
+        btnLimparNota.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        btnLimparNota.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/limpar-limpo.png")); // NOI18N
+        btnLimparNota.setText("Limpar");
+        btnLimparNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparNotaActionPerformed(evt);
+            }
+        });
+
+        btnSalvarNota.setBackground(new java.awt.Color(51, 153, 255));
+        btnSalvarNota.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnSalvarNota.setForeground(new java.awt.Color(255, 255, 255));
+        btnSalvarNota.setIcon(new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/salvar.png")); // NOI18N
+        btnSalvarNota.setText("Salvar");
+        btnSalvarNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarNotaActionPerformed(evt);
+            }
+        });
+
+        tblNotas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Aluno", "Disciplina", "Situação"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblNotas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblNotasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblNotas);
+
+        btnDeletarNota.setBackground(new java.awt.Color(255, 51, 0));
+        btnDeletarNota.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        btnDeletarNota.setForeground(new java.awt.Color(255, 255, 255));
+        btnDeletarNota.setText("Deletar");
+        btnDeletarNota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeletarNotaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 602, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cbxAluno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbxDisciplina, 0, 347, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(34, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnDeletarNota)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnSalvarNota)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLimparNota))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 684, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cbxAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(cbxDisciplina, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtNota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnLimparNota)
+                    .addComponent(btnSalvarNota))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDeletarNota)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Notas", new javax.swing.ImageIcon("/Users/alexisdanielkang/NetBeansProjects/LancadorNotas/src/main/resources/notas-adesivas.png"), jPanel2); // NOI18N
@@ -223,15 +382,53 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbxTurmaActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+    private void btnLimparAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAlunoActionPerformed
         resetarCamposAluno();
-    }//GEN-LAST:event_btnLimparActionPerformed
+    }//GEN-LAST:event_btnLimparAlunoActionPerformed
 
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+    private void btnSalvarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarAlunoActionPerformed
         listaAlunos.add(retornaAluno());
         resetarCamposAluno();
-        System.out.println(listaAlunos.toString());
-    }//GEN-LAST:event_btnSalvarActionPerformed
+        atualizarTabelaAlunos();
+        atualizarComboAlunos();
+    }//GEN-LAST:event_btnSalvarAlunoActionPerformed
+
+    private void tblAlunosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlunosMouseClicked
+        posicaoTabelaAluno = tblAlunos.getSelectedRow();
+        btnDeletarAluno.setEnabled(true);
+    }//GEN-LAST:event_tblAlunosMouseClicked
+
+    private void btnDeletarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarAlunoActionPerformed
+        listaAlunos.remove(posicaoTabelaAluno);
+        atualizarTabelaAlunos();
+        posicaoTabelaAluno = -1;
+        btnDeletarAluno.setEnabled(false);
+        atualizarComboAlunos();
+    }//GEN-LAST:event_btnDeletarAlunoActionPerformed
+
+    private void btnLimparNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparNotaActionPerformed
+        resetarCamposNota();
+    }//GEN-LAST:event_btnLimparNotaActionPerformed
+
+    private void btnSalvarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarNotaActionPerformed
+        
+        listaNotas.add(retornaNota());
+        resetarCamposNota();
+        atualizarTabelaNotas();
+        
+    }//GEN-LAST:event_btnSalvarNotaActionPerformed
+
+    private void tblNotasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNotasMouseClicked
+        posicaoTabelaNota =  tblNotas.getSelectedRow();
+        btnDeletarNota.setEnabled(true);
+    }//GEN-LAST:event_tblNotasMouseClicked
+
+    private void btnDeletarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarNotaActionPerformed
+        listaNotas.remove(posicaoTabelaNota);
+        atualizarTabelaNotas();
+        posicaoTabelaNota = -1;
+        btnDeletarNota.setEnabled(false);
+    }//GEN-LAST:event_btnDeletarNotaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -244,26 +441,39 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnLimpar;
-    private javax.swing.JButton btnSalvar;
+    private javax.swing.JButton btnDeletarAluno;
+    private javax.swing.JButton btnDeletarNota;
+    private javax.swing.JButton btnLimparAluno;
+    private javax.swing.JButton btnLimparNota;
+    private javax.swing.JButton btnSalvarAluno;
+    private javax.swing.JButton btnSalvarNota;
+    private javax.swing.JComboBox<Object> cbxAluno;
+    private javax.swing.JComboBox<String> cbxDisciplina;
     private javax.swing.JComboBox<String> cbxTurma;
     private javax.swing.JFormattedTextField ftdDAta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable tblAlunos;
+    private javax.swing.JTable tblNotas;
     private javax.swing.JTextField txtNome;
+    private javax.swing.JTextField txtNota;
     // End of variables declaration//GEN-END:variables
 
     private void resetarCamposAluno() {
         txtNome.setText("");
         cbxTurma.setSelectedIndex(0);
         ftdDAta.setText("");
+        posicaoTabelaAluno = -1;
     }
     
     private Aluno retornaAluno(){
@@ -291,5 +501,67 @@ public class Principal extends javax.swing.JFrame {
         //return a;
         
         
+    }
+    
+    private void atualizarTabelaAlunos(){
+        DefaultTableModel modelo = 
+                (DefaultTableModel) tblAlunos.getModel();
+        
+        modelo.setRowCount(0);
+        for(Aluno a : listaAlunos){
+            modelo.addRow(new Object[]{
+                a.getId(),
+                a.getNome(),
+                a.getTurma(),
+                a.retornaIdade()
+            });
+        }
+        
+        modelo.fireTableDataChanged();
+    }
+    
+    private void atualizarComboAlunos(){
+        cbxAluno.removeAllItems();
+        cbxAluno.addItem("Selecione...");
+        for(Aluno a : listaAlunos){
+            cbxAluno.addItem(a);
+        }
+    }
+
+    private void resetarCamposNota() {
+        cbxAluno.setSelectedIndex(0);
+        cbxDisciplina.setSelectedIndex(0);
+        txtNota.setText("");
+        posicaoTabelaNota = -1;
+    }
+    
+    private Nota retornaNota(){
+        Aluno a = (Aluno) cbxAluno.getSelectedItem();
+        String disciplina = 
+                (String) cbxDisciplina.getSelectedItem();
+        float nota = Float.parseFloat(txtNota.getText());
+        
+        Nota n =  new Nota();
+        n.setAluno(a);
+        n.setDisciplina(disciplina);
+        n.setNota(nota);
+        
+        //return new Nota(a, disciplina, nota);
+        
+        return n;
+    }
+    
+    private void atualizarTabelaNotas(){
+        DefaultTableModel modelo = 
+                (DefaultTableModel) tblNotas.getModel();
+        modelo.setRowCount(0);
+        for(Nota n : listaNotas){
+            modelo.addRow(new Object[]{
+                n.getAluno(),
+                n.getDisciplina(),
+                n.retornaSituacao()
+            });
+        }
+        modelo.fireTableDataChanged();
     }
 }
