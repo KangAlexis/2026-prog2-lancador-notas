@@ -17,7 +17,7 @@ public class LancadorNotas {
 
     public static void main(String[] args) {
         
-        FlatLightLaf.setup();
+        FlatLightLaf.setup(); //Configura o tema e aplica
               
         new Principal().setVisible(true);
     }

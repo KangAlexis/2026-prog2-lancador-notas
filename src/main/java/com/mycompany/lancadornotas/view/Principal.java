@@ -20,20 +20,21 @@ import javax.swing.table.DefaultTableModel;
 public class Principal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Principal.class.getName());
+    
     //Aluno
-    private List<Aluno> listaAlunos =  new ArrayList<>();
-    private int posicaoTabelaAluno = -1;
+    private List<Aluno> listaAlunos =  new ArrayList<>();   //Lista de alunos
+    private int posicaoTabelaAluno = -1;                    //Variavel criada onde irá armazenar a posição do objeto que queremos remover da lista
     
     //Nota
-    private List<Nota> listaNotas = new ArrayList<>();
-    private int posicaoTabelaNota = -1;
+    private List<Nota> listaNotas = new ArrayList<>();      //Lista de notas
+    private int posicaoTabelaNota = -1;                     //Variavel criada onde irá armazenar a posição do objeto que queremos remover da lista
     
     public Principal() {
         initComponents();
-        setLocationRelativeTo(null);
-        setResizable(false);
-        btnDeletarAluno.setEnabled(false);
-        btnDeletarNota.setEnabled(false);
+        setLocationRelativeTo(null);        //Centraliza a tela
+        setResizable(false);                //Não permite maximixar a tela
+        btnDeletarAluno.setEnabled(false);  //Deixa indisponível o botão Deletar(Aluno)
+        btnDeletarNota.setEnabled(false);   //Deixa indisponível o botão Deletar(Nota)
     }
 
     /**
@@ -95,11 +96,6 @@ public class Principal extends javax.swing.JFrame {
 
         cbxTurma.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         cbxTurma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione...", "1A", "1B", "2A", "2B", "3A", "3B" }));
-        cbxTurma.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxTurmaActionPerformed(evt);
-            }
-        });
 
         try {
             ftdDAta.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -378,56 +374,56 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cbxTurmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTurmaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxTurmaActionPerformed
-
     private void btnLimparAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAlunoActionPerformed
+        //Chama a função que reseta os componentes
         resetarCamposAluno();
     }//GEN-LAST:event_btnLimparAlunoActionPerformed
 
     private void btnSalvarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarAlunoActionPerformed
-        listaAlunos.add(retornaAluno());
-        resetarCamposAluno();
-        atualizarTabelaAlunos();
-        atualizarComboAlunos();
+        listaAlunos.add(retornaAluno());    //Estamos adicionando um novo objeto (Aluno) utilizando a nossa função que retorna um objeto
+        resetarCamposAluno();               //Reseta os campos
+        atualizarTabelaAlunos();            //Atualiza a tabela de alunos
+        atualizarComboAlunos();             //Atualiza a combobox de alunos
     }//GEN-LAST:event_btnSalvarAlunoActionPerformed
-
+    
+    //Evento criado ao clicar na tabela
     private void tblAlunosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlunosMouseClicked
-        posicaoTabelaAluno = tblAlunos.getSelectedRow();
-        btnDeletarAluno.setEnabled(true);
+        posicaoTabelaAluno = tblAlunos.getSelectedRow();    //Quando usuário clica na linha ela retorna uma posição que armazenamos nesta variável global
+        btnDeletarAluno.setEnabled(true);                   //Habilita o botão Deletar(Aluno)
     }//GEN-LAST:event_tblAlunosMouseClicked
 
     private void btnDeletarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarAlunoActionPerformed
-        listaAlunos.remove(posicaoTabelaAluno);
-        atualizarTabelaAlunos();
-        posicaoTabelaAluno = -1;
-        btnDeletarAluno.setEnabled(false);
-        atualizarComboAlunos();
+        listaAlunos.remove(posicaoTabelaAluno); //Remove da lista o aluno a partir da posição que foi pega após o usuário clicar na tabela
+        atualizarTabelaAlunos();                //Atualiza a tabela Alunos
+        posicaoTabelaAluno = -1;                //Resetamos a variável para nao manter a posição salva após remover o objeto da lista
+        btnDeletarAluno.setEnabled(false);      //Desabilita o botão
+        atualizarComboAlunos();                 //Atualiza combobox aluno
     }//GEN-LAST:event_btnDeletarAlunoActionPerformed
 
     private void btnLimparNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparNotaActionPerformed
+        //Reseta e limpa os campos
         resetarCamposNota();
     }//GEN-LAST:event_btnLimparNotaActionPerformed
 
     private void btnSalvarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarNotaActionPerformed
         
-        listaNotas.add(retornaNota());
-        resetarCamposNota();
-        atualizarTabelaNotas();
+        listaNotas.add(retornaNota());  //Adicionamos um novo objeto na lista usando uma função que retorna um objeto (Nota)
+        resetarCamposNota();            //Reseta e limpa os campos notas
+        atualizarTabelaNotas();         //Atualiza a tabela notas
         
     }//GEN-LAST:event_btnSalvarNotaActionPerformed
 
+    //Evento que pega 
     private void tblNotasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblNotasMouseClicked
-        posicaoTabelaNota =  tblNotas.getSelectedRow();
-        btnDeletarNota.setEnabled(true);
+        posicaoTabelaNota =  tblNotas.getSelectedRow(); //Pega a posição da tabela e armazena em uma variável
+        btnDeletarNota.setEnabled(true);                //Habilita o botão deletar (Nota)
     }//GEN-LAST:event_tblNotasMouseClicked
 
     private void btnDeletarNotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarNotaActionPerformed
-        listaNotas.remove(posicaoTabelaNota);
-        atualizarTabelaNotas();
-        posicaoTabelaNota = -1;
-        btnDeletarNota.setEnabled(false);
+        listaNotas.remove(posicaoTabelaNota);   // Remove o objeto da lista a partir da posição que foi armazena ao clicar na tabela
+        atualizarTabelaNotas();                 // Atualiza a tabela notas
+        posicaoTabelaNota = -1;                 // reseta a posição
+        btnDeletarNota.setEnabled(false);       // Desabilita o botão deletar(Nota)
     }//GEN-LAST:event_btnDeletarNotaActionPerformed
 
     /**
@@ -470,98 +466,174 @@ public class Principal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void resetarCamposAluno() {
-        txtNome.setText("");
-        cbxTurma.setSelectedIndex(0);
-        ftdDAta.setText("");
-        posicaoTabelaAluno = -1;
+        txtNome.setText("");            //Limpa o campo
+        cbxTurma.setSelectedIndex(0);   //Deixa setado o primeiro elemento da combobox
+        ftdDAta.setText("");            //Limpa o campo
+        posicaoTabelaAluno = -1;        //Reseta a posição
     }
     
+    //Função criada para retornar um objeto do tipo Aluno
     private Aluno retornaAluno(){
-        String nome = txtNome.getText();
-        String turma = cbxTurma.getSelectedItem().toString();
+        String nome = txtNome.getText();                        //Armazena em uma variável o que foi digitado pelo usuário no campo do nome
+        String turma = cbxTurma.getSelectedItem().toString();   //Armazena o que foi selecionado na combobox e o ".toString" pega o que foi seleciona e retorna tipo String 
         
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatter = 
+                DateTimeFormatter.ofPattern("dd/MM/yyyy");      //Formata a data para dia/mes/ano   
         
-        String data = ftdDAta.getText();
+        String data = ftdDAta.getText();                        //Armazena o texto da data digitada em uma string
         
-        LocalDate dataNasc = LocalDate.parse(data, formatter);
-        
-        //Forma 3
-        return new Aluno(nome, turma, dataNasc);
+        LocalDate dataNasc = LocalDate.parse(data, formatter);  //Transforma a data para LocalDate com a formatação desejada
         
         //Forma 1 para retornar Aluno
-        //Aluno a =  new Aluno();
-        //a.setNome(nome);
-        //a.setTurma(turma);
-        //a.setDataNasc(dataNasc);
-        //return a;
+        return new Aluno(nome, turma, dataNasc);                //Retorna um aluno passando diretamente a instancia
         
-        //Forma 2 
-        //Aluno a =  new Aluno(nome, turma, dataNasc);
-        //return a;
+        /* Forma 2 
+            Aluno a =  new Aluno();
+            a.setNome(nome);
+            a.setTurma(turma);
+            a.setDataNasc(dataNasc);
+            
+            return a;
+        */
         
+        /* Forma 3
+            Aluno a =  new Aluno(nome, turma, dataNasc);
+            return a;
+        */
         
     }
     
-    private void atualizarTabelaAlunos(){
-        DefaultTableModel modelo = 
-                (DefaultTableModel) tblAlunos.getModel();
-        
+    
+    /*
+    * Atualiza a tabela de alunos exibida na interface.
+    * Remove todas as linhas atuais e adiciona novamente
+    * os dados presentes na lista de alunos.
+    */
+    private void atualizarTabelaAlunos() {
+
+        // Obtém o modelo de dados associado à JTable
+        DefaultTableModel modelo =
+               (DefaultTableModel) tblAlunos.getModel();
+
+        // Remove todas as linhas existentes da tabela
         modelo.setRowCount(0);
-        for(Aluno a : listaAlunos){
+
+        // Percorre todos os alunos da lista
+        for (Aluno a : listaAlunos) {
+
+            // Adiciona uma nova linha na tabela com os dados do aluno
             modelo.addRow(new Object[]{
-                a.getId(),
-                a.getNome(),
-                a.getTurma(),
-                a.retornaIdade()
+                a.getId(),          // Coluna ID
+                a.getNome(),        // Coluna Nome
+                a.getTurma(),       // Coluna Turma
+                a.retornaIdade()    // Coluna Idade
             });
         }
-        
+
+        // Notifica a tabela de que os dados foram alterados,
+        // forçando a atualização da interface gráfica
         modelo.fireTableDataChanged();
     }
     
-    private void atualizarComboAlunos(){
+    /**
+     * Atualiza os itens do JComboBox de alunos.
+     * Remove os itens atuais e carrega novamente
+     * os alunos presentes na lista.
+    */
+    private void atualizarComboAlunos() {
+
+        // Remove todos os itens atualmente exibidos no JComboBox
         cbxAluno.removeAllItems();
+
+        // Adiciona a opção padrão para o usuário selecionar
         cbxAluno.addItem("Selecione...");
-        for(Aluno a : listaAlunos){
+
+        // Percorre a lista de alunos
+        for (Aluno a : listaAlunos) {
+            // Adiciona cada aluno como uma opção do JComboBox
             cbxAluno.addItem(a);
         }
     }
 
+    /**
+    * Limpa os campos do formulário de notas,
+    * retornando-os ao estado inicial.
+    */
     private void resetarCamposNota() {
+
+        // Seleciona a primeira opção do combo de alunos ("Selecione...")
         cbxAluno.setSelectedIndex(0);
+
+        // Seleciona a primeira opção do combo de disciplinas
         cbxDisciplina.setSelectedIndex(0);
+
+        // Limpa o campo de texto da nota
         txtNota.setText("");
+
+        // Reseta a posição da linha selecionada na tabela
+        // (-1 indica que nenhuma linha está selecionada)
         posicaoTabelaNota = -1;
     }
     
-    private Nota retornaNota(){
+    /**
+    * Cria e retorna um objeto Nota com os dados
+    * informados nos campos da interface.
+    */
+    private Nota retornaNota() {
+
+        // Obtém o aluno selecionado no JComboBox
         Aluno a = (Aluno) cbxAluno.getSelectedItem();
-        String disciplina = 
+
+        // Obtém a disciplina selecionada no JComboBox
+        String disciplina =
                 (String) cbxDisciplina.getSelectedItem();
+
+        // Converte o texto digitado para o tipo float
         float nota = Float.parseFloat(txtNota.getText());
-        
-        Nota n =  new Nota();
+
+        // Cria um novo objeto Nota
+        Nota n = new Nota();
+
+        // Define o aluno da nota
         n.setAluno(a);
+
+        // Define a disciplina da nota
         n.setDisciplina(disciplina);
+
+        // Define o valor da nota
         n.setNota(nota);
-        
-        //return new Nota(a, disciplina, nota);
-        
+
+        // Retorna o objeto Nota preenchido
         return n;
     }
     
-    private void atualizarTabelaNotas(){
-        DefaultTableModel modelo = 
+    /**
+    * Atualiza a tabela de notas exibida na interface.
+    * Remove todas as linhas atuais e carrega novamente
+    * os dados presentes na lista de notas.
+    */
+    private void atualizarTabelaNotas() {
+
+        // Obtém o modelo de dados associado à JTable de notas
+        DefaultTableModel modelo =
                 (DefaultTableModel) tblNotas.getModel();
+
+        // Remove todas as linhas existentes da tabela
         modelo.setRowCount(0);
-        for(Nota n : listaNotas){
+
+        // Percorre todas as notas cadastradas na lista
+        for (Nota n : listaNotas) {
+
+            // Adiciona uma nova linha na tabela com os dados da nota
             modelo.addRow(new Object[]{
-                n.getAluno(),
-                n.getDisciplina(),
-                n.retornaSituacao()
+                n.getAluno(),          // Aluno relacionado à nota
+                n.getDisciplina(),     // Disciplina da nota
+                n.retornaSituacao()    // Situação do aluno (Aprovado/Reprovado, por exemplo)
             });
         }
+
+        // Notifica a tabela que os dados foram alterados
+        // para atualizar a exibição na interface
         modelo.fireTableDataChanged();
     }
 }
