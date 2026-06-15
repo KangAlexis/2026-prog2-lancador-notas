@@ -24,6 +24,7 @@ public class Principal extends javax.swing.JFrame {
     //Aluno
     private List<Aluno> listaAlunos =  new ArrayList<>();   //Lista de alunos
     private int posicaoTabelaAluno = -1;                    //Variavel criada onde irá armazenar a posição do objeto que queremos remover da lista
+    private int id = 0;
     
     //Nota
     private List<Nota> listaNotas = new ArrayList<>();      //Lista de notas
@@ -380,16 +381,26 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLimparAlunoActionPerformed
 
     private void btnSalvarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarAlunoActionPerformed
-        listaAlunos.add(retornaAluno());    //Estamos adicionando um novo objeto (Aluno) utilizando a nossa função que retorna um objeto
+        
+        if(id < 1){
+            listaAlunos.add(retornaAluno());    //Estamos adicionando um novo objeto (Aluno) utilizando a nossa função que retorna um objeto
+        }else{
+            editarAlunos(id);
+        }
+        
         resetarCamposAluno();               //Reseta os campos
         atualizarTabelaAlunos();            //Atualiza a tabela de alunos
         atualizarComboAlunos();             //Atualiza a combobox de alunos
+        
+        
     }//GEN-LAST:event_btnSalvarAlunoActionPerformed
     
     //Evento criado ao clicar na tabela
     private void tblAlunosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAlunosMouseClicked
         posicaoTabelaAluno = tblAlunos.getSelectedRow();    //Quando usuário clica na linha ela retorna uma posição que armazenamos nesta variável global
         btnDeletarAluno.setEnabled(true);                   //Habilita o botão Deletar(Aluno)
+        id = (int) tblAlunos.getValueAt(posicaoTabelaAluno, 0);
+        preencherCamposAluno(id);
     }//GEN-LAST:event_tblAlunosMouseClicked
 
     private void btnDeletarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeletarAlunoActionPerformed
@@ -470,6 +481,8 @@ public class Principal extends javax.swing.JFrame {
         cbxTurma.setSelectedIndex(0);   //Deixa setado o primeiro elemento da combobox
         ftdDAta.setText("");            //Limpa o campo
         posicaoTabelaAluno = -1;        //Reseta a posição
+        id = 0;
+        btnDeletarAluno.setEnabled(false);
     }
     
     //Função criada para retornar um objeto do tipo Aluno
@@ -635,5 +648,33 @@ public class Principal extends javax.swing.JFrame {
         // Notifica a tabela que os dados foram alterados
         // para atualizar a exibição na interface
         modelo.fireTableDataChanged();
+    }
+
+    private void preencherCamposAluno(int id) {
+        for(Aluno a: listaAlunos){
+            if(a.getId() == id){
+                txtNome.setText(a.getNome());
+                cbxTurma.setSelectedItem(a.getTurma());
+                String data =  String.format("%02d/%02d/%04d", 
+                        a.getDataNasc().getDayOfMonth(),
+                        a.getDataNasc().getMonthValue(),
+                        a.getDataNasc().getYear());
+                ftdDAta.setText(data);
+                break;
+            }
+        }
+    }
+
+    private void editarAlunos(int id) {
+        Aluno novo = retornaAluno();
+        
+        for(Aluno a: listaAlunos){
+            if(a.getId() == id){
+                a.setNome(novo.getNome());
+                a.setTurma(novo.getTurma());
+                a.setDataNasc(novo.getDataNasc());
+                break;
+            }
+        }
     }
 }

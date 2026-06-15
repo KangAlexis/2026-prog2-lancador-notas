@@ -6,6 +6,7 @@ package com.mycompany.lancadornotas;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mycompany.lancadornotas.model.Aluno;
+import com.mycompany.lancadornotas.view.Login;
 import com.mycompany.lancadornotas.view.Principal;
 import java.time.LocalDate;
 
@@ -19,6 +20,6 @@ public class LancadorNotas {
         
         FlatLightLaf.setup(); //Configura o tema e aplica
               
-        new Principal().setVisible(true);
+        new Login().setVisible(true);
     }
 }
